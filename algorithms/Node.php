@@ -41,7 +41,8 @@ class Node implements NodeInterface
     {
         $html = str_repeat('+ ', $level) . $node->getName()."\n";
 
-        foreach ($node->getChildren() as $child) {
+        foreach ($node->getChildren() as $child) 
+        {
             $html .= self::print($child, $level + 1);
         }
 
