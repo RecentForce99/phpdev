@@ -1,37 +1,25 @@
-<?php
-
+<?php 
 
 class Node implements NodeInterface
 {
-    /** string $element */
-    public $element;
 
-    /** string $parent */
-    public $parent;
+    private string $name = '';
 
-    /** array $parent */
-    public $array = [];
-
-    public function __construct(string $element)
+    private array $children = [];
+    
+    public function __construct(string $name)
     {
-        $this->parent = $element;
-        $this->element = $element;
-        $this->array[$element];
-
-        $this->addChild($this->element);
-
-        //print_r($this->array);
+        $this->name = $name;
     }
 
     public function __toString(): string
     {
-        return $this->parent;
+        return self::print($this);
     }
 
-    /** Результат*/
     public function getName(): string
     {
-        return $this->parent;
+        return $this->name;
     }
 
     /**
@@ -39,23 +27,25 @@ class Node implements NodeInterface
      */
     public function getChildren(): array
     {
-
-        return [1,2,3,4];
+        return $this->children;
     }
 
-    /**
-     * @return $this
-     */
-
-    //Если оставить Node в аргументах и тип вывода self, то выводит ошибку.
-
-    public function addChild($element) : array
+    public function addChild(Node $node): self
     {
+        $this->children[] = $node;
 
-        $this->array[$this->parent][] = $element;
-
-        print_r($this->array);
-
-        return $this->array;
+        return $this;
     }
+
+    private static function print(Node $node, $level = 1)
+    {
+        $html = str_repeat('+ ', $level) . $node->getName()."\n";
+
+        foreach ($node->getChildren() as $child) {
+            $html .= self::print($child, $level + 1);
+        }
+
+        return $html;
+    }
+
 }
